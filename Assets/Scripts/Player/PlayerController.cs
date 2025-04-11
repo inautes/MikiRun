@@ -24,11 +24,14 @@ public class PlayerController : MonoBehaviour
     
     private GameManager gameManager;
     
+    private AudioManager audioManager;
+    
     void Start()
     {
         controller = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
         gameManager = FindObjectOfType<GameManager>();
+        audioManager = AudioManager.Instance;
         currentHealth = maxHealth;
         
         if (groundCheck == null)
@@ -60,6 +63,9 @@ public class PlayerController : MonoBehaviour
             moveDirection.y = jumpForce;
             if (animator != null)
                 animator.SetTrigger("Jump");
+            
+            if (audioManager != null)
+                audioManager.PlayJumpSound();
         }
         
         moveDirection.y -= gravity * Time.deltaTime;
@@ -81,6 +87,9 @@ public class PlayerController : MonoBehaviour
         
         if (animator != null)
             animator.SetTrigger("Hit");
+            
+        if (audioManager != null)
+            audioManager.PlayHitSound();
         
         if (currentHealth <= 0)
         {
